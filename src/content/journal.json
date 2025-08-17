@@ -1,0 +1,10 @@
+{
+  "journal": [
+    { "date": "2025-08-12", "text": "Sketched new layout ideas for the Hub grid; kept the asymmetry intentional." },
+    { "date": "2025-08-11", "text": "Refined pagination styling. Small type, uppercase labels." },
+    { "date": "2025-08-10", "text": "Rough draft of Issue Zero. Mapped color tokens to information, not decoration." },
+    { "date": "2025-08-09", "text": "Explored integrating GLSL for subtle atmospheric effects (future)." },
+    { "date": "2025-08-08", "text": "Defined the lexicon: archive, translate, pattern, system, layer, cosmic, memory, signal." },
+    { "date": "2025-08-07", "text": "Set brand variables in CSS. Tightened line-heights and margins." }
+  ]
+}

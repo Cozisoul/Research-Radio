@@ -1,0 +1,23 @@
+[
+  {
+  "reading": "Walter Benjamin – The Work of Art in the Age of Mechanical Reproduction",
+  "listening": "Ryoji Ikeda – data.mathematics",
+  "watching": "ESA: Gaia Mission Visualizations",
+  "making": "MeerKAT data sketches → p5.js → canvas prints"
+  },
+  {
+    "title": "Initial Inquiry",
+    "link": "https://example.com/entry1",
+    "reflection": "Let's start fundamentally: what is research radio?"
+  },
+  {
+    "title": "Systematic Poetry",
+    "link": "https://example.com/entry2",
+    "reflection": "Exploring the intersection of data and poetic narrative."
+  },
+  {
+    "title": "Local AI Model Demo",
+    "link": "https://github.com/yourorg/model-demo",
+    "reflection": "A small demonstration of a local AI model parsing poetic data."
+  }
+]

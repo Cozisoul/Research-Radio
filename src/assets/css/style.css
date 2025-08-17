@@ -1,0 +1,31 @@
+/* TMM-OS: RESEARCH RADIO V1.3 STYLESHEET (ESSAY-FIRST) */
+:root {
+  --color-system-black: #000;
+  --color-cosmic-latte: #FFF8E7;
+  --color-sound-blue: #00f;
+  --color-border: rgba(0,0,0,.15);
+  --space-unit: 8px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--color-cosmic-latte);color:var(--color-system-black);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6}
+.site-header,.content-grid,.site-footer{padding:calc(var(--space-unit)*4)}
+.content-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:calc(var(--space-unit)*3);min-height:60vh}
+h1{font-weight:900;font-size:48px;text-transform:uppercase;margin:0 0 calc(var(--space-unit)*2)}
+h2{font-weight:700;font-size:24px;text-transform:uppercase;padding-bottom:var(--space-unit);border-bottom:1px solid var(--color-system-black);margin:0 0 calc(var(--space-unit)*3)}
+h3{font-weight:700;text-transform:uppercase;font-size:16px;margin:0 0 var(--space-unit)}
+p{max-width:65ch;margin:0 0 calc(var(--space-unit)*2)}
+a{color:var(--color-sound-blue);text-decoration:none;border-bottom:1px solid var(--color-sound-blue)}
+ul{list-style:none;padding:0}
+li{margin-bottom:var(--space-unit)}
+.meta{font-weight:300;font-size:14px;color:rgba(0,0,0,.7)}
+.annotation{font-family:Menlo,monospace;font-size:12px;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:calc(var(--space-unit)*4)}
+.hub[hidden]{display:none}
+.hub{position:fixed;inset:0;background:var(--color-cosmic-latte);padding:calc(var(--space-unit)*4);overflow-y:auto;z-index:900}
+.hub-header{display:flex;justify-content:space-between;align-items:flex-start}
+.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--space-unit)*3)}
+.tile{padding:calc(var(--space-unit)*2);border:1px solid var(--color-system-black)}
+.modal{position:fixed;inset:0;background-color:rgba(255,248,231,.96);backdrop-filter:blur(2px);display:flex;justify-content:center;align-items:center;z-index:1000}
+.modal[hidden]{display:none}
+.modal-content{background:var(--color-cosmic-latte);border:1px solid var(--color-system-black);max-width:800px;width:calc(100% - var(--space-unit)*4);padding:calc(var(--space-unit)*4);max-height:90vh;overflow-y:auto}
+.close-btn{border:none;background:transparent;font-family:'Helvetica Neue',sans-serif;font-size:24px;font-weight:300;cursor:pointer;float:right;line-height:1;padding:0;margin:calc(var(--space-unit)*-2) 0}
