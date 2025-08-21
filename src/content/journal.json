@@ -1,10 +1,26 @@
-{
-  "journal": [
-    { "date": "2025-08-12", "text": "Sketched new layout ideas for the Hub grid; kept the asymmetry intentional." },
-    { "date": "2025-08-11", "text": "Refined pagination styling. Small type, uppercase labels." },
-    { "date": "2025-08-10", "text": "Rough draft of Issue Zero. Mapped color tokens to information, not decoration." },
-    { "date": "2025-08-09", "text": "Explored integrating GLSL for subtle atmospheric effects (future)." },
-    { "date": "2025-08-08", "text": "Defined the lexicon: archive, translate, pattern, system, layer, cosmic, memory, signal." },
-    { "date": "2025-08-07", "text": "Set brand variables in CSS. Tightened line-heights and margins." }
-  ]
-}
+[
+  {
+    "id": "j-2025-07-10",
+    "date": "2025-07-10",
+    "title": "Studio Log: Process as Proof",
+    "summary": "The act of documenting the work is becoming as important as the work itself. Adopting a 'working in public' model forces clarity and provides a layer of accountability. The journal is not an archive of finished thoughts, but a log of the system in motion.",
+    "link": null,
+    "tags": ["meta", "process", "systems-thinking"]
+  },
+  {
+    "id": "j-2025-07-07",
+    "date": "2025-07-07",
+    "title": "MeerKAT Notes: Signal Integrity",
+    "summary": "Deep in the MeerKAT UHF bandpass calibration data. The initial challenge is separating the astronomical signal from the systemic noise. It's a process of purification—finding the single, clear voice within the cosmic static. The parallels to archival work are impossible to ignore.",
+    "link": "https://github.com/Cozisoul/CalibratingTheCosmos-UHF",
+    "tags": ["data-science", "meerkat", "signal", "research"]
+  },
+  {
+    "id": "j-2025-07-05",
+    "date": "2025-07-05",
+    "title": "On Systematic Minimalism",
+    "summary": "Revisiting the principles of Konstantin Grcic's 'Office for Design'. The idea of a practice as an 'office' rather than a 'studio' resonates deeply. It implies a systematic, professional, and tool-agnostic approach to creative problems. Structure is not a constraint; it is the ultimate enabler of freedom.",
+    "link": null,
+    "tags": ["philosophy", "minimalism", "konstantin-grcic"]
+  }
+]

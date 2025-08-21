@@ -1,31 +1,169 @@
-/* TMM-OS: RESEARCH RADIO V1.3 STYLESHEET (ESSAY-FIRST) */
+/* TMM-OS VISUAL SYSTEM V1.7 (DEFINITIVE - ADAPTIVE LAYOUT) */
+/* --------------------------------------------------
+   1.0 SYSTEM ROOT & DESIGN TOKENS
+--------------------------------------------------- */
 :root {
-  --color-system-black: #000;
-  --color-cosmic-latte: #FFF8E7;
-  --color-sound-blue: #00f;
-  --color-border: rgba(0,0,0,.15);
+  --color-bg: #FFF8E7;
+  --color-fg: #0A0A0A;
+  --color-fg-subtle: rgba(10, 10, 10, 0.6);
+  --color-backdrop: rgba(30, 30, 30, 0.8);
+  --color-border: rgba(10, 10, 10, 0.15);
+  --color-blue: #0047FF;
+  --color-green: #008000;
+  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: Menlo, monospace;
   --space-unit: 8px;
+  --transition-speed: 350ms;
+  --header-height: 120px;
+  --player-height: 50px;
 }
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-font-smoothing:antialiased}
-body{margin:0;background:var(--color-cosmic-latte);color:var(--color-system-black);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6}
-.site-header,.content-grid,.site-footer{padding:calc(var(--space-unit)*4)}
-.content-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:calc(var(--space-unit)*3);min-height:60vh}
-h1{font-weight:900;font-size:48px;text-transform:uppercase;margin:0 0 calc(var(--space-unit)*2)}
-h2{font-weight:700;font-size:24px;text-transform:uppercase;padding-bottom:var(--space-unit);border-bottom:1px solid var(--color-system-black);margin:0 0 calc(var(--space-unit)*3)}
-h3{font-weight:700;text-transform:uppercase;font-size:16px;margin:0 0 var(--space-unit)}
-p{max-width:65ch;margin:0 0 calc(var(--space-unit)*2)}
-a{color:var(--color-sound-blue);text-decoration:none;border-bottom:1px solid var(--color-sound-blue)}
-ul{list-style:none;padding:0}
-li{margin-bottom:var(--space-unit)}
-.meta{font-weight:300;font-size:14px;color:rgba(0,0,0,.7)}
-.annotation{font-family:Menlo,monospace;font-size:12px;text-transform:uppercase;color:rgba(0,0,0,.6);margin-bottom:calc(var(--space-unit)*4)}
-.hub[hidden]{display:none}
-.hub{position:fixed;inset:0;background:var(--color-cosmic-latte);padding:calc(var(--space-unit)*4);overflow-y:auto;z-index:900}
-.hub-header{display:flex;justify-content:space-between;align-items:flex-start}
-.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--space-unit)*3)}
-.tile{padding:calc(var(--space-unit)*2);border:1px solid var(--color-system-black)}
-.modal{position:fixed;inset:0;background-color:rgba(255,248,231,.96);backdrop-filter:blur(2px);display:flex;justify-content:center;align-items:center;z-index:1000}
-.modal[hidden]{display:none}
-.modal-content{background:var(--color-cosmic-latte);border:1px solid var(--color-system-black);max-width:800px;width:calc(100% - var(--space-unit)*4);padding:calc(var(--space-unit)*4);max-height:90vh;overflow-y:auto}
-.close-btn{border:none;background:transparent;font-family:'Helvetica Neue',sans-serif;font-size:24px;font-weight:300;cursor:pointer;float:right;line-height:1;padding:0;margin:calc(var(--space-unit)*-2) 0}
+
+/* --------------------------------------------------
+   2.0 GLOBAL RESET & OS SHELL ARCHITECTURE
+--------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+body { background-color: var(--color-bg); color: var(--color-fg); font-family: var(--font-sans); font-size: 16px; line-height: 1.6; overflow: hidden; }
+.site-header { position: fixed; top: 0; left: 0; right: 0; padding: calc(var(--space-unit) * 4); height: var(--header-height); z-index: 950; transition: all var(--transition-speed) ease; }
+.hub { padding: var(--header-height) calc(var(--space-unit) * 4) var(--player-height); height: 100vh; overflow-y: auto; transition: padding var(--transition-speed) ease; }
+.hub[hidden] { display: none; }
+.signal-player { position: fixed; bottom: 0; left: 0; right: 0; height: var(--player-height); background-color: rgba(255, 248, 231, 0.8); backdrop-filter: blur(8px); border-top: 1px solid var(--color-border); padding: 0 calc(var(--space-unit) * 4); display: flex; align-items: center; gap: calc(var(--space-unit) * 2); z-index: 1100; }
+#os-shell.faded { opacity: 0.1; pointer-events: none; }
+
+/* --------------------------------------------------
+   3.0 THE ADAPTIVE LAYOUT (DEFINITIVE FIX)
+   WHY: This new class, applied to the body, reconfigures the entire
+        layout when the sensor is active to prevent scrolling.
+--------------------------------------------------- */
+body.sensor-active-mode .site-header {
+  height: 80px; /* Shrink the header */
+  padding: var(--space-unit);
+}
+body.sensor-active-mode .hub {
+  padding-top: 80px; /* Adjust hub padding to match */
+}
+body.sensor-active-mode h1 {
+  font-size: 24px; /* Shrink the title */
+}
+
+/* --------------------------------------------------
+   4.0 THE ROBUST BREATHING GRID
+--------------------------------------------------- */
+.hub-grid { display: flex; flex-wrap: wrap; gap: calc(var(--space-unit) * 3); }
+.tile { border: 1px solid var(--color-border); padding: calc(var(--space-unit) * 3); flex-basis: calc(33.333% - calc(var(--space-unit) * 2)); flex-grow: 1; transition: all var(--transition-speed) cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.hub-grid:hover .tile:not(:hover) { flex-grow: 0; }
+.tile:hover { flex-grow: 10; border-color: var(--color-fg); }
+
+/* --------------------------------------------------
+   5.0 SENSOR/FX MODULE - VISUAL INTEGRATION (DEFINITIVE FIX)
+   WHY: The active sensor now uses flexbox to fill available space
+        without forcing a scroll. This is the core canvas fix.
+--------------------------------------------------- */
+#sensor-tile {
+  display: flex;
+  flex-direction: column;
+}
+.tile.sensor-live {
+  flex-basis: 100%;
+  border-color: var(--color-green);
+}
+#sensor-canvas-container {
+  flex-grow: 1; /* Allows the container to fill vertical space */
+  min-height: 0; /* A critical flexbox trick to allow shrinking */
+  transition: all 500ms ease-in-out;
+}
+.sensor-live #sensor-canvas-container {
+  margin-top: var(--space-unit);
+}
+#sensor-canvas-container canvas {
+  width: 100%;
+  height: 100%; /* Canvas now fills its container perfectly */
+  object-fit: cover; /* Ensures the video feed is not distorted */
+}
+.sensor-live .meta { color: var(--color-green); }
+
+/* --------------------------------------------------
+   6.0 TYPOGRAPHY, COMPONENTS, MODAL & ACCESSIBILITY
+--------------------------------------------------- */
+h2{
+  font-weight:700;
+  font-size:24px;
+  text-transform:uppercase;
+  padding-bottom:var(--space-unit);
+  border-bottom:1px solid var(--color-fg);
+  margin-bottom:calc(var(--space-unit)*3)
+}
+
+h3{
+  font-family:var(--font-mono);
+  font-weight:700;
+  text-transform:uppercase;
+  font-size:14px;
+  margin-bottom:var(--space-unit)
+}
+
+.annotation{
+  font-family:var(--font-mono);
+  font-size:12px;text-transform:uppercase;
+  color:var(--color-fg-subtle)
+}
+
+.meta{font-family:var(--font-mono);
+  font-size:14px;color:var(--color-fg-subtle)}a{color:var(--color-blue);text-decoration:none;
+  border-bottom:1px solid var(--color-blue);
+  transition:all var(--transition-speed) ease
+}
+
+a:hover{
+  background-color:var(--color-blue);
+  color:var(--color-bg)
+}
+button{
+  font-family:var(--font-mono);
+  border:1px solid var(--color-fg);
+  background:transparent;
+  padding:var(--space-unit) calc(var(--space-unit)*1.5);font-size:14px;
+  cursor:pointer;text-transform:uppercase;
+  transition:all var(--transition-speed) ease
+}
+button:hover{
+  background-color:var(--color-fg);
+    color:var(--color-bg)
+}
+.modal{position:fixed;inset:0;
+  background-color:var(--color-backdrop);
+  backdrop-filter:blur(4px);display:flex;
+  justify-content:center;align-items:center;
+  z-index:1000;opacity:1!important}.modal[hidden]{display:none}
+.modal-content{background:var(--color-bg);
+  border:1px solid var(--color-fg);
+  max-width:1200px;
+  width:calc(100% - var(--space-unit)*4);padding:calc(var(--space-unit)*4);
+  max-height:90vh;overflow-y:auto}.essay-grid-container{display:grid;
+  grid-template-columns:repeat(12,1fr);gap:calc(var(--space-unit)*4)
+}
+
+.essay-content{grid-column:1 / span 7
+}
+
+.marginalia{
+  grid-column:8 / span 5;
+  padding-top:calc(var(--space-unit)*8)
+}
+
+.close-btn{border:none;background:transparent;
+  font-size:24px;cursor:pointer;float:right;
+  transition:transform var(--transition-speed) ease
+}
+
+.close-btn:hover{transform:rotate(90deg)
+}
+
+.skip-link{
+  position:absolute;top:-100px;
+  left:0;background:var(--color-fg);
+  color:var(--color-bg);
+padding:var(--space-unit);
+z-index:9999;transition:top .3s ease
+}
+.skip-link:focus{top:0}

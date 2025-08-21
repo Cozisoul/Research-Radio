@@ -4,67 +4,84 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Research Radio — Thapelo Madiba Masebe</title>
-  <meta name="description" content="A laboratory for essays, signals, and experiments by Thapelo Madiba Masebe." />
-  <link rel="stylesheet" href="./assets/css/style.css" />
+  
+  <!-- The single, definitive stylesheet for the TMM-OS visual system -->
+  <link rel="stylesheet" href="/assets/css/style.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header" role="banner">
-    <p class="annotation">*TMM-OS/RESEARCH-RADIO/V1.3...</p>
-    <h1>Research Radio</h1>
-  </header>
+  <!-- ============================================================
+       THE OS SHELL
+       This container holds all background layers that will fade
+       when a modal or overlay is active. It is the "desktop."
+       ============================================================ -->
+  <div id="os-shell">
+    <a class="skip-link" href="#main">Skip to content</a>
+    
+    <header class="site-header" role="banner">
+      <p class="annotation">*TMM-OS/RESEARCH-RADIO/V1.6*</p>
+      <h1>Research Radio</h1>
+    </header>
 
-  <main id="main" class="content-grid" role="main"></main>
+    <!-- The main content area, primarily for accessibility targeting -->
+    <main id="main" class="content-grid" role="main"></main>
+    
+    <!-- The Hub is the primary archival interface, hidden by default -->
+    <aside id="hub" class="hub" hidden>
+      <div class="hub-header">
+        <p class="annotation">*THE_HUB/ARCHIVE_INTERFACE...</p>
+      </div>
+      <div class="hub-grid" role="region" aria-label="The Hub">
+        <section class="tile">
+          <h3>Journal</h3>
+          <ul id="journalList"></ul>
+          <nav id="journal-pagination"></nav>
+        </section>
+        <section class="tile">
+          <h3>Projects</h3>
+          <ul id="projectList"></ul>
+        </section>
+        <section class="tile">
+          <h3>Current Input</h3>
+          <ul id="currentList"></ul>
+        </section>
+        
+        <!-- The Sensor/FX Module provides its own container "port" -->
+        <section id="sensor-tile" class="tile"></section>
+      </div>
+    </aside>
+  </div>
 
-  <!-- Hub hidden until essay closes -->
-  <aside id="hub" class="hub" hidden>
-    <div class="hub-header">
-       <p class="annotation">*THE_HUB/DATA_INPUT_SYSTEM...</p>
-    </div>
-    <div class="hub-grid" role="region" aria-label="The Hub">
-      <section class="tile tile-journal">
-        <h3>Journal</h3>
-        <ul id="journalList"></ul>
-        <nav id="journal-pagination" aria-label="Journal pages"></nav>
-      </section>
-      <section class="tile tile-projects">
-        <h3>Projects</h3>
-        <ul id="projectList"></ul>
-      </section>
-      <section class="tile tile-current">
-        <h3>Current Input</h3>
-        <ul id="currentList"></ul>
-      </section>
-      <section class="tile tile-about">
-        <h3>About</h3>
-        <p>Thapelo Madiba Masebe is a transdisciplinary artist and researcher working at the intersection of data, memory, and emerging African identity.</p>
-        <p><a href="mailto:thapelomasebe@proton.me">Email</a></p>
-      </section>
-      <section class="tile tile-links">
-        <h3>Elsewhere</h3>
-        <ul>
-          <li><a href="https://github.com/Cozisoul">GitHub</a></li>
-          <li><a href="https://instagram.com/thapelo_gv72">Instagram</a></li>
-          <li><a href="https://soundcloud.com/cozisoul">SoundCloud</a></li>
-          <li><a href="https://linkedin.com/in/thapelo-masebe-733a67143">LinkedIn</a></li>
-        </ul>
-      </section>
-    </div>
-  </aside>
+  <!-- ============================================================
+       FOREGROUND & PERIPHERAL LAYERS
+       These elements are siblings to the OS Shell, not children.
+       This is critical to prevent them from inheriting the .faded class.
+       ============================================================ -->
 
-  <!-- Essay modal shown immediately -->
+  <!-- The Essay Modal is the focused reading layer -->
   <div id="essayModal" class="modal">
     <div class="modal-content">
       <button id="closeEssay" class="close-btn" aria-label="Close Essay">×</button>
-      <article id="essayModalContent"></article>
+      <div class="essay-grid-container">
+        <article id="essayModalContent" class="essay-content"></article>
+        <aside id="essayMarginalia" class="marginalia"></aside>
+      </div>
     </div>
   </div>
 
-  <footer class="site-footer" role="contentinfo">
-    <small>© 2025 Thapelo Madiba Masebe — Research Radio</small>
+  <!-- The Signal Player is the persistent OS status bar -->
+  <footer id="signal-player-container" class="signal-player" role="contentinfo">
+    <!-- The SignalPlayer.js module will render its UI here -->
   </footer>
 
+  <!-- ============================================================
+       LIBRARIES & ORCHESTRATOR
+       ============================================================ -->
+  <!-- External library for the Sensor/FX Module -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <!-- External library for the Markdown content parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- The main application orchestrator -->
   <script type="module" src="/js/app.js"></script>
 </body>
 </html>
