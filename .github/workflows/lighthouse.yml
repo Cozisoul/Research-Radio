@@ -1,0 +1,11 @@
+name: Lighthouse CI
+on: [push]
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
+      - run: npx http-server ./dist -p 8080 & sleep 2
+      - run: npx @lhci/cli autorun --upload.target=temporary-public-storage
