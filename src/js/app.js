@@ -11,6 +11,8 @@ import { loadAllContent } from './ContentLoader.js';
 import { initPagination } from './pagination.js';
 import { SignalPlayer } from './SignalPlayer.js';
 import { SensorFX } from './SensorFX.js';
+import { ContentSearch } from './ContentSearch.js';     // NEW
+import { CommandPalette } from './CommandPalette.js'; // NEW
 
 // --- 2. DOM ELEMENT SELECTORS ---
 // We select all dynamic elements of the OS Shell at startup.
@@ -138,6 +140,18 @@ async function initialize() {
   });
   renderJournalPage(content.journal, 0); // Render the first page
   journalPagination?.render(0); // Render the pagination controls
+
+  const searcher = ContentSearch(content);
+  const palette = CommandPalette(searcher);
+
+  // 7. Define what happens when a search result is selected
+  palette.onSelect(selectedItem => {
+    // For now, we just log the action. In the future, this could
+    // open a specific project window or scroll to a journal entry.
+    console.log('Actioning selected item:', selectedItem);
+    hideEssayAndShowHub(); // Show the hub so the user can see the context
+  });
+
 }
 
 // --- 6. EXECUTION ---
