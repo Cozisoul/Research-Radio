@@ -1,111 +1,129 @@
 <!doctype html>
 <html lang="en-ZA">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; script-src 'self';">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Research Radio — Sonic studies in memory, data & culture</title>
+<meta name="description" content="A laboratory for systematic-poetic inquiry. Research Radio is a sonic archive and listening room exploring memory, data and Black cultural geographies." />
 
-  <title>Research Radio — Issue Zero</title>
-  <meta name="description" content="Research, essays, and experiments by Thapelo Madiba Masebe.">
-  <meta property="og:title" content="Research Radio — Issue Zero">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/og/issue-zero.png">
-  <meta property="og:description" content="Systematic‑poetic investigations at the intersection of data, memory and identity.">
+<link rel="canonical" href="https://research-radio.vercel.app/" />
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/icons/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#fff8e7">
 
-  <!-- CSS bundle – after building copy to /assets/css/main.css -->
-  <link rel="stylesheet" href="/research-radio/src/assets/css/style.css">
+<!-- Preload critical assets -->
+<link rel="preload" href="/fonts/Inter-Var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/img/og/research-radio-og.jpg" as="image" fetchpriority="high">
 
-  <script type="module" crossorigin src="/assets/main-BJPXRCHL.js"></script>
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Research Radio">
+<meta property="og:description" content="Sonic archive & listening room.">
+<meta property="og:url" content="https://research-radio.vercel.app/">
+<meta property="og:image" content="https://research-radio.vercel.app/img/og/research-radio-og.jpg">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Research Radio">
+<meta name="twitter:description" content="Sonic archive & listening room.">
+<meta name="twitter:image" content="https://research-radio.vercel.app/img/og/research-radio-og.jpg">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Website", "CreativeWorkSeries"],
+  "name": "Research Radio",
+  "url": "https://research-radio.vercel.app/",
+  "description": "A laboratory for systematic-poetic inquiry into memory, data and culture.",
+  "creator": {"@type":"Person","name":"Thapelo Masebe"},
+  "inLanguage": "en",
+  "sameAs": ["https://instagram.com/…","https://soundcloud.com/…"]
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-CEUvQE14.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-1M7ivzrI.css">
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- 1. Header -->
-  <header class="site-header" role="banner">
-    <h1>Research Radio</h1>
-    <nav aria-label="Primary" class="site-nav">
-      <button id="openHub" aria-controls="hub" aria-expanded="false">Open The Hub</button>
-    </nav>
-  </header>
+  <!-- ============================================================
+       THE OS SHELL
+       This container holds all background layers that will fade
+       when a modal or overlay is active. It is the "desktop."
+       ============================================================ -->
+  <div id="os-shell">
+    <a class="skip-link" href="#main">Skip to content</a>
+    
+    <header class="site-header" role="banner">
+      <p class="annotation">*TMM-OS/RESEARCH-RADIO/V1.6*</p>
+      <h1>Research Radio</h1>
+    </header>
 
-  <!-- 2. Main Content (Issue Zero) -->
-  <main id="main" class="content" role="main">
-    <article class="essay">
-      <header>
-        <h2>Issue Zero — On Material Honesty</h2>
-        <p class="dek">Why this platform is built with the raw materials of the web.</p>
-        <p class="meta">Published <time datetime="2025-07-13">13 July 2025</time></p>
-      </header>
-      <section class="body">
-        <p>…your essay here…</p>
-      </section>
-    </article>
-  </main>
+    <!-- The main content area, primarily for accessibility targeting -->
+    <main id="main" class="content-grid" role="main"></main>
+    
+    <!-- The Hub is the primary archival interface, hidden by default -->
+    <aside id="hub" class="hub" hidden>
+      <div class="hub-header">
+        <p class="annotation">*THE_HUB/ARCHIVE_INTERFACE...</p>
+      </div>
+      <div class="hub-grid" role="region" aria-label="The Hub">
+        <section class="tile">
+          <h3>Journal</h3>
+          <ul id="journalList"></ul>
+          <nav id="journal-pagination"></nav>
+        </section>
+        <section class="tile">
+          <h3>Projects</h3>
+          <ul id="projectList"></ul>
+        </section>
+        <section class="tile">
+          <h3>Current Input</h3>
+          <ul id="currentList"></ul>
+        </section>
+        
+        <!-- The Sensor/FX Module provides its own container "port" -->
+        <section id="sensor-tile" class="tile"></section>
+      </div>
+    </aside>
+  </div>
 
-  <!-- 3. Hub (aside) -->
-  <aside id="hub" class="hub" hidden>
-    <div class="hub-grid" role="region" aria-label="The Hub">
-      <!-- Journal -->
-      <section class="tile tile-journal">
-        <h3>Journal</h3>
-        <ul id="journalList">
-          <li><a href="#">On Systematic Minimalism</a><time datetime="2025-07-05">05 Jul</time></li>
-          <li><a href="#">MeerKAT Notes: UHF</a><time datetime="2025-07-07">07 Jul</time></li>
-          <li><a href="#">Studio Log: Process as Proof</a><time datetime="2025-07-10">10 Jul</time></li>
-        </ul>
-      </section>
+  <!-- ============================================================
+       FOREGROUND & PERIPHERAL LAYERS
+       These elements are siblings to the OS Shell, not children.
+       This is critical to prevent them from inheriting the .faded class.
+       ============================================================ -->
 
-      <!-- Projects -->
-      <section class="tile tile-projects">
-        <h3>Projects</h3>
-        <ul>
-          <li><a href="https://github.com/Cozisoul/CalibratingTheCosmos-UHF">Calibrating The Cosmos (UHF)</a></li>
-          <li><a href="https://github.com/Cozisoul/tmm-creative-coding">Creative Coding Archive</a></li>
-          <li><a href="https://github.com/Cozisoul/p5-image-effect-roulette">p5 Image Effect Roulette</a></li>
-        </ul>
-      </section>
-
-      <!-- Current Input -->
-      <section class="tile tile-current">
-        <h3>Current Input</h3>
-        <input type="text" class="search-filter" placeholder="Search…">
-        <ul id="input-list" class="input-list"></ul>
-        <nav class="pagination" id="input-pagination"></nav>
-      </section>
-
-      <!-- Episodes -->
-      <section class="tile tile-episodes">
-        <h3>Episodes</h3>
-        <input type="text" class="search-filter" placeholder="Search…">
-        <ul id="episode-list" class="episode-list"></ul>
-        <nav class="pagination" id="episode-pagination"></nav>
-      </section>
-
-      <!-- About -->
-      <section class="tile tile-about">
-        <h3>About</h3>
-        <p>Thapelo Madiba Masebe — transdisciplinary artist, researcher & systematic thinker.</p>
-        <p><a href="mailto:hello@yourdomain.za">Email</a></p>
-      </section>
-
-      <!-- Social Links -->
-      <section class="tile tile-links">
-        <h3>Elsewhere</h3>
-        <ul>
-          <li><a href="https://github.com/Cozisoul">GitHub</a></li>
-          <li><a href="https://instagram.com/thapelo_gv72">Instagram</a></li>
-          <li><a href="https://soundcloud.com/cozisoul">SoundCloud</a></li>
-          <li><a href="https://www.linkedin.com/in/thapelo-masebe-733a67143">LinkedIn</a></li>
-        </ul>
-      </section>
+  <!-- The Essay Modal is the focused reading layer -->
+  <div id="essayModal" class="modal">
+    <div class="modal-content">
+      <button id="closeEssay" class="close-btn" aria-label="Close Essay">×</button>
+      <div class="essay-grid-container">
+        <article id="essayModalContent" class="essay-content"></article>
+        <aside id="essayMarginalia" class="marginalia"></aside>
+      </div>
     </div>
-  </aside>
+    
+  </div>
+    <div id="command-palette" class="command-palette" hidden>
+    <input type="text" id="command-input" placeholder="Search the archive or run a command..." />
+    <ul id="command-results"></ul>
+  </div>
 
-  <!-- 4. Footer -->
-  <footer class="site-footer" role="contentinfo">
-    <small>© 2025 Thapelo Madiba Masebe — Research Radio</small>
+  <!-- The Signal Player is the persistent OS status bar -->
+  <footer id="signal-player-container" class="signal-player" role="contentinfo">
+    <!-- The SignalPlayer.js module will render its UI here -->
   </footer>
 
-  <!-- MAIN SCRIPT: app.js (handles all logic) -->
+  <!-- ============================================================
+       LIBRARIES & ORCHESTRATOR
+       ============================================================ -->
+  <!-- External library for the Sensor/FX Module -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <!-- External library for the Markdown content parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/js/current_input.js"></script>
 </body>
 </html>
