@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Radio</title>
+    <meta name="description" content="A laboratory for systematic-poetic inquiry." />
+    <!-- CRITICAL PATH FIX: The path now includes 'src' -->
+    <link rel="stylesheet" href="/src/assets/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div id="site-wrapper">
+    <div id="os-shell">
+      <header class="site-header">
+        <p class="annotation">*TMM-OS/RESEARCH-RADIO/V4.0_FINAL*</p>
+        <h1>Research Radio</h1>
+      </header>
+      <main id="hub" class="hub">
+        <div class="hub-grid">
+          <section class="tile"><h3 class="tile-title">Journal</h3><ul id="journalList"></ul></section>
+          <section class="tile"><h3 class="tile-title">Projects</h3><ul id="projectList"></ul></section>
+          <section class="tile"><h3 class="tile-title">Current Input</h3><ul id="currentList"></ul></section>
+        </div>
+      </main>
+    </div>
+    <div id="unifiedModal" class="modal" hidden>
+      <div class="modal-content">
+        <button id="closeModalBtn" class="close-btn" aria-label="Close"></button>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <div id="signal-player-container"></div>
+      <div class="footer-controls">
+          <div id="sensor-tile" class="sensor-control">
+              <p class="meta" id="sensor-status">* SENSOR/FX: OFFLINE</p>
+              <button data-modal-trigger="sensorfx">Activate</button>
+          </div>
+          <div id="live-data-component"></div>
+      </div>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <!-- CRITICAL PATH FIX: The path now includes 'src' -->
+  <script type="module" src="/src/js/app.js"></script>
+</body>
+</html>

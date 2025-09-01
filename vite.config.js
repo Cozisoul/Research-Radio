@@ -1,22 +1,22 @@
-// TMM-OS: VITE BUILD CONFIGURATION (FINAL)
+// TMM-OS: VITE BUILD CONFIGURATION (DEFINITIVE & FOOLPROOF)
 import { defineConfig } from 'vite';
-import path from 'path';
 
 export default defineConfig({
-  root: 'src',
+  // We are NOT using the 'root' property.
+  // We are NOT using path.resolve or __dirname.
+  // We will let Vite use its default behavior and explicitly tell it where everything is.
+
   build: {
-    outDir: '../dist',
+    outDir: 'dist',
     emptyOutDir: true,
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-          utDir: '../dist',
-        emptyOutDir: true,
-    },
-  },
-  server: {
-    port: 5173,
-    open: true,
+
+    rollupOptions: {
+      // CRITICAL: This is the simplest possible way to define your pages.
+      // These paths are relative to your project's root directory.
+      input: {
+        main: 'index.html',
+        admin: 'admin.html'
+      }
+    }
   },
 });

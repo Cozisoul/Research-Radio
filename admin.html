@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Research Radio | Content Admin</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="/src/assets/css/style.css">
+    <style>
+        body { padding: 2rem; font-family: sans-serif; }
+        .form-section { margin-bottom: 1.5rem; }
+        label { display: block; margin: .3rem 0 .1rem; }
+        input, textarea { width: 100%; padding: .4rem; }
+        button { margin-top: .7rem; margin-right: .5rem; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Research Radio – Content Admin</h1>
+
+        <!-- “Current Input” form will be injected here -->
+        <div id="current-input-form"></div>
+
+        <!-- “Journal Entries” form will be injected here -->
+        <div id="journal-entries-form"></div>
+
+        <!-- Action buttons -->
+        <div class="admin-actions" style="margin-top: 1rem;">
+            <button id="add-journal-entry">Add Journal Entry</button>
+            <button id="save-button">Save Database</button>
+        </div>
+    </div>
+
+    <!-- The modular JavaScript (remember Vite serves from /src) -->
+    <script type="module" src="/src/js/admin.js"></script>
+</body>
+</html>
