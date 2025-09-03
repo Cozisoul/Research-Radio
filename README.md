@@ -1,5 +1,5 @@
 # RESEARCH RADIO | The Digital Journal of a Transdisciplinary Practice
-**Version:** 2.0 | **Status:** LIVE | [researchradio.co.za](*coming soon...)
+**Version:** 2.0 | **Status:** LIVE |(*coming soon...)
 
 > "Art is a fluid space where personal history and collective experience intersect."
 
