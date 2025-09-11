@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>SPACE IMPACT - TMM REFACTOR</title>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="canvas-bg"></canvas>
+        <canvas id="canvas-main"></canvas>
+        
+        <div id="ui-overlay">
+            
+            <!-- Main Menu State -->
+            <div id="main-menu">
+                <h1>SPACE IMPACT</h1>
+                <p class="annotation">TMM-OS REFACTOR</p>
+                <button id="play-button">Play</button>
+                <button id="exit-button-main">Exit</button>
+            </div>
+
+            <!-- In-Game UI State -->
+            <div id="game-ui" hidden>
+                <div id="lives"></div>
+                <div id="special"></div>
+                <div id="score"></div>
+                <button id="pause-button">Pause</button>
+            </div>
+
+            <!-- Paused State -->
+            <div id="pause-menu" hidden>
+                <h2>PAUSED</h2>
+                <button id="resume-button">Resume</button>
+                <button id="exit-button-pause">Exit to Menu</button>
+            </div>
+
+            <!-- Game Over State -->
+            <div id="game-over-menu" hidden>
+                <h2 id="game-over-title">GAME OVER</h2>
+                <p id="final-score">FINAL SCORE: 00000</p>
+                <button id="restart-button">Play Again</button>
+            </div>
+
+        </div>
+    </div>
+    <script src="./src/game.js"></script>
+</body>
+</html>

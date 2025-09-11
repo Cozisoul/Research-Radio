@@ -1,89 +1,190 @@
+/* TMM-OS VISUAL SYSTEM V4.0 (DEFINITIVE - MAKINGSOFTWARE REFACTOR) */
+
 :root {
-  --bg: #fff8e7; --fg: #0e0e0e; --accent: #1d4ed8; --muted: #6b7280;
-  --border: rgba(14, 14, 14, 0.15); --backdrop: rgba(30, 30, 30, 0.8);
+  --bg: #fff8e7; --fg: #0e0e0e; --accent: #0000FF; --muted: #6b7280;
+  --border: rgba(14, 14, 14, 0.2); --backdrop: rgba(255, 248, 231, 0.5);
   --font-sans: 'Inter', sans-serif; --font-mono: 'Menlo', monospace;
-  --space-sm: 8px; --space-md: 16px; --space-lg: 24px; --dur-2: 320ms; --ease-out: cubic-bezier(.16,1,.3,1);
+  --space-md: 16px; --space-lg: 24px; --dur-2: 320ms; --ease-out: cubic-bezier(.16,1,.3,1);
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); line-height: 1.6; }
-#site-wrapper { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-#os-shell { flex-grow: 1; display: flex; flex-direction: column; transition: opacity var(--dur-2), transform var(--dur-2); overflow: hidden; }
-#os-shell.faded { opacity: 0.1; pointer-events: none; transform: scale(0.98); }
-.site-header { padding: var(--space-lg); border-bottom: 1px solid var(--border); }
-.hub { padding: var(--space-lg); overflow-y: auto; flex-grow: 1; }
-.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
-.tile { border: 1px solid var(--border); padding: var(--space-lg); }
-h1 { font-size: 2.2rem; line-height: 1.1; }
-h3.tile-title { font-family: var(--font-mono); font-size: 14px; text-transform: uppercase; margin-bottom: var(--space-md); }
-.meta { font-size: 14px; color: var(--muted); }
-a { color: var(--accent); text-decoration: none; }
-button { font-family: var(--font-mono); border: 1px solid var(--fg); background: transparent; padding: 8px 12px; font-size: 14px; cursor: pointer; }
-.modal { position: fixed; inset: 0; background: var(--backdrop); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 500; opacity: 0; visibility: hidden; transition: all var(--dur-2); }
-.modal.is-open { opacity: 1; visibility: visible; }
-.modal-content { position: relative; background: var(--bg); border: 1px solid var(--fg); width: 80vw; max-width: 1200px; height: 80vh; display: flex; flex-direction: column; transform: scale(0.95); transition: all var(--dur-2); overflow: hidden; }
-.modal.is-open .modal-content { transform: scale(1); }
-.modal-body {
-  padding: var(--space-lg); /* <-- DELETE THIS LINE */
-  overflow-y: auto;
-  flex-grow: 1;
-  min-height: 0;
+body { background: #1a1a1a; color: var(--fg); font-family: var(--font-sans); line-height: 1.6; }
+
+#site-wrapper {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: var(--bg);
+  min-height: 100vh;
+  position: relative;
 }
-.close-btn { position: absolute; top: var(--space-md); right: var(--space-md); width: 32px; height: 32px; border: 1px solid var(--fg); background: var(--bg); cursor: pointer; z-index: 10; transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2); }
-.close-btn::before, .close-btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 1px; background-color: var(--fg); transition: background-color var(--dur-2); }
+
+#os-shell { transition: opacity var(--dur-2), filter var(--dur-2); }
+#os-shell.faded { opacity: 0.2; filter: blur(8px); pointer-events: none; }
+
+.site-header { padding: var(--space-lg); border-bottom: 1px solid var(--border); }
+.annotation { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+h1 { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+
+.hub { padding: var(--space-lg); padding-bottom: 80px; /* Space for footer */ }
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1px; background-color: var(--border); border: 1px solid var(--border); }
+.tile { background-color: var(--bg); padding: var(--space-lg); }
+.tile-large { grid-column: span 2; }
+.tile-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; margin-bottom: var(--space-md); }
+.tile-list { list-style: none; padding: 0; }
+.tile-list li { padding-bottom: var(--space-md); }
+.tile-list a { font-weight: bold; text-decoration: none; color: var(--fg); border-bottom: 1px solid var(--fg); }
+.meta { font-size: 14px; color: var(--muted); }
+.current-input-category { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; }
+
+.modal { position: fixed; inset: 0; backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 500; opacity: 0; visibility: hidden; transition: all var(--dur-2); }
+.modal.is-open { opacity: 1; visibility: visible; }
+.modal-content {
+  /* CHANGE THIS ONE LINE */
+  position: relative; /* WAS: position: inherit; */
+
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  width: 90vw;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+.modal-body {
+  padding: var(--space-lg);
+  overflow-y: auto;
+}
+
+/* --- From Section 4.0 THE UNIFIED MODAL --- */
+
+/* THIS IS YOUR PREFERRED BUTTON STYLE - INTEGRATED */
+.close-btn {
+  cursor: pointer;
+  height: 32px;
+  position: absolute;
+  right: var(--space-md);
+  top: var(--space-md);
+  width: 32px;
+  z-index: 10;
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2);
+}
+.close-btn::before, .close-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 1px;
+  background-color: var(--fg);
+  transition: background-color var(--dur-2);
+}
 .close-btn::before { transform: translate(-50%, -50%) rotate(45deg); }
 .close-btn::after { transform: translate(-50%, -50%) rotate(-45deg); }
-.close-btn:hover { transform: rotate(180deg); background-color: var(--fg); }
-.close-btn:hover::before, .close-btn:hover::after { background-color: var(--bg); }
-.essay-grid-container { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-lg); align-items: start; height: 100%; }
-.essay-content h2 { font-size: 2rem; font-weight: 700; margin-bottom: var(--space-md); border-bottom: 1px solid var(--border); padding-bottom: var(--space-md); }
-.marginalia { border-left: 1px solid var(--border); padding-left: var(--space-lg); height: 100%; display: flex; flex-direction: column; justify-content: center; }
-.marginalia figure { width: 100%; border: 1px solid var(--border); padding: var(--space-sm); }
-.marginalia figcaption { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align: center; padding-top: var(--space-sm); }
+.close-btn:hover {
+  transform: rotate(180deg);
+  background-color: var(--fg);
+}
+.close-btn:hover::before, .close-btn:hover::after {
+  background-color: var(--bg);
+}
 
+.essay-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+}
+#sensor-canvas-container { flex-grow: 1; background: #000; }
+.sensor-modal-controls { text-align: center; padding-top: var(--space-md); border-top: 1px solid var(--border); }
 
-.layout-sensor {
+/* ADD THIS ENTIRE NEW BLOCK AT THE END OF YOUR MODAL STYLES */
+/* This is the final, critical piece that fixes the essay layout */
+.layout-essay {
+  display: grid;
+  /* CRITICAL FIX: This new rule makes the second column content-sized */
+  grid-template-columns: 1fr auto; 
+  gap: var(--space-lg);
+  height: 100%;
+  padding: var(--space-lg);
+}
+
+.marginalia {
+  border-left: 1px solid var(--border);
+  padding-left: var(--space-lg);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 }
-#sensor-canvas-container {
+
+.marginalia figure {
   width: 100%;
-  background: #000;
-  
-  /* CRITICAL FIX: Add the padding here */
-  padding: var(--space-md);
   border: 1px solid var(--border);
-
-  /* Let the content inside (the canvas) be centered */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: var(--space-sm);
 }
 
-#sensor-canvas-container canvas {
-  /* The canvas will be controlled by JS, but we ensure it doesn't overflow */
-  max-width: 100%;
-  max-height: 100%;
-}
-.sensor-modal-controls {
-  padding-top: var(--space-md);
+.marginalia figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
   text-align: center;
-  width: 100%;
+  padding-top: var(--space-sm);
+  color: var(--muted);
 }
 
-.layout-essay {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--space-lg);
-  align-items: start;
-  height: 100%;
-  padding: var(--space-lg); /* <-- ADD THIS LINE */
+.site-footer {
+  /* CRITICAL FIX: Restore fixed positioning */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  height: 50px;
+  background: rgba(255, 248, 231, 0.8);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-lg);
+  z-index: 200;
 }
 
-.site-footer { height: 50px; background: rgba(255, 248, 231, 0.8); backdrop-filter: blur(8px); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 var(--space-lg); flex-shrink: 0; z-index: 100; }
 .footer-controls { display: flex; align-items: center; gap: var(--space-lg); }
-.sensor-control { display: flex; align-items: center; gap: var(--space-sm); }
+.sensor-control { display: flex; align-items: center; gap: var(--space-md); }
 #live-data-component { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+button { font-family: var(--font-mono); border: 1px solid var(--fg); background: transparent; padding: 8px 12px; font-size: 12px; cursor: pointer; text-transform: uppercase; }
+
+/* In src/assets/css/style.css */
+
+.modal-body.layout-game {
+    padding: 0;
+    height: 60vh;
+    width: 100%;
+}
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.game-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#fullscreen-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+.modal-content.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: 0;
+}

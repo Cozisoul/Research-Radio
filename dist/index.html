@@ -1,49 +1,60 @@
 <!doctype html>
 <html lang="en-ZA">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Research Radio</title>
-    <meta name="description" content="A laboratory for systematic-poetic inquiry." />
-    <!-- CRITICAL PATH FIX: The path now includes 'src' -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script type="module" crossorigin src="/assets/main-oJB9H_jB.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/database-Bqh_P4lA.js">
-  <link rel="stylesheet" crossorigin href="/assets/database-RVDA1fw6.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Research Radio</title>
+  <meta name="description" content="A laboratory for systematic-poetic inquiry." />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script type="module" crossorigin src="/assets/main-DJQzFwqL.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/SensorFX-Cf-JUmhz.js">
+  <link rel="stylesheet" crossorigin href="/assets/SensorFX-CfpNZwk7.css">
 </head>
-<body>
+<body data-view="hub"> <!-- The default view is the Hub -->
+
   <div id="site-wrapper">
     <div id="os-shell">
       <header class="site-header">
-        <p class="annotation">*TMM-OS/RESEARCH-RADIO/V4.0_FINAL*</p>
+        <p class="annotation">*TMM-OS/RESEARCH-RADIO/V5.1*</p>
         <h1>Research Radio</h1>
       </header>
       <main id="hub" class="hub">
         <div class="hub-grid">
-          <section class="tile"><h3 class="tile-title">Journal</h3><ul id="journalList"></ul></section>
-          <section class="tile"><h3 class="tile-title">Projects</h3><ul id="projectList"></ul></section>
-          <section class="tile"><h3 class="tile-title">Current Input</h3><ul id="currentList"></ul></section>
+          <section class="tile tile-large"><h3 class="tile-title">*JOURNAL_LOG/</h3><ul id="journalList" class="tile-list"></ul></section>
+          <section class="tile"><h3 class="tile-title">*PROJECTS_DIR/</h3><ul id="projectList" class="tile-list"></ul></section>
+          <section class="tile tile-large"><h3 class="tile-title">*CURRENT_INPUT/</h3><ul id="currentList" class="tile-list"></ul></section>
+          <section id="game-tile" class="tile tile-interactive">
+            <h3 class="tile-title">*PERIPHERALS/SPACE_IMPACT</h3>
+            <div class="game-container">
+                <iframe id="game-iframe" href="./public/game/index.html" title="Space Impact Game" loading="lazy"></iframe>
+            </div>
+          </section>
         </div>
       </main>
     </div>
-    <div id="unifiedModal" class="modal" hidden>
+
+    <!-- THE MODAL (CRITICAL FIX HERE) -->
+    <div id="unifiedModal" class="modal">
       <div class="modal-content">
+        <!-- THE MISSING BUTTON IS NOW HERE -->
         <button id="closeModalBtn" class="close-btn" aria-label="Close"></button>
         <div class="modal-body"></div>
       </div>
     </div>
+
+    <!-- THE FOOTER / STATUS BAR -->
     <footer class="site-footer">
       <div id="signal-player-container"></div>
       <div class="footer-controls">
-          <div id="sensor-tile" class="sensor-control">
-              <p class="meta" id="sensor-status">* SENSOR/FX: OFFLINE</p>
-              <button data-modal-trigger="sensorfx">Activate</button>
-          </div>
-          <div id="live-data-component"></div>
+        <div id="sensor-control" class="sensor-control">
+          <p class="meta" id="sensor-status">* SENSOR/FX: OFFLINE</p>
+          <button data-trigger="sensorfx">Activate</button>
+        </div>
+        <div id="live-data-component"></div>
       </div>
     </footer>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-  <!-- CRITICAL PATH FIX: The path now includes 'src' -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 </body>
 </html>

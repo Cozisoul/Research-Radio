@@ -1,130 +1,180 @@
-// src/js/admin.js
-/* 1️⃣  Import the original database.  */
+/*-----------------------------------------------------------*/
+/*  Imports – keep the URLs exactly as the rest of the project */
 import { db } from '../content/database.js';
+import { SignalPlayer } from './modules/SignalPlayer.js';
+import { SensorFX } from './modules/SensorFX.js';
 
-/* 2️⃣  Make a deep copy so we can edit safely. */
-let currentData = JSON.parse(JSON.stringify(db));
+/*-----------------------------------------------------------*/
+/*  DOM cache – pulls in every element we need in runtime */
+const dom = {
+  osShell: document.getElementById('os-shell'),
+  unifiedModal: document.getElementById('unifiedModal'),
+  closeModalBtn: document.getElementById('closeModalBtn'),
+  modalBody: document.querySelector('.modal-body'),
+  journalList: document.getElementById('journalList'),
+  projectList: document.getElementById('projectList'),
+  currentList: document.getElementById('currentList'),
+  liveDataComponent: document.getElementById('live-data-component'),
+  sensorTile: document.getElementById('sensor-tile'),
+};
 
-/* -------------------------------------------------------------------------- */
-/* 3️⃣  Render form sections (current input + journal entries). */
-function renderForms() {
-  // Current Input – one field set per item
-  const currentInputHTML = currentData.currentInput
+/*-----------------------------------------------------------*/
+/*  Global state – we remember the active sensor + animation */
+let contentData = {};
+let activeSensor = null;
+let signalAnimationId;
+
+/*-----------------------------------------------------------*/
+/*  Open/close modal helpers */
+function openModal(content, layoutClass = '') {
+  dom.modalBody.innerHTML = content;
+  dom.modalBody.className = `modal-body ${layoutClass}`;
+  dom.unifiedModal.removeAttribute('hidden');
+  setTimeout(() => dom.unifiedModal.classList.add('is-open'), 10);
+  dom.osShell.classList.add('faded');
+}
+
+function closeModal() {
+  if (activeSensor) {
+    activeSensor.deactivate();
+    activeSensor = null;
+  }
+  if (signalAnimationId) cancelAnimationFrame(signalAnimationId);
+  dom.unifiedModal.classList.remove('is-open');
+  setTimeout(() => {
+    dom.unifiedModal.setAttribute('hidden', '');
+    dom.modalBody.innerHTML = '';
+  }, 320);
+  dom.osShell.classList.remove('faded');
+}
+
+/*-----------------------------------------------------------*/
+/*  Render the hub lists – just innerHTML for speed */
+function renderHubContent() {
+  dom.journalList.innerHTML = contentData.journalEntries
     .map(
-      (item, i) => `
-        <div class="form-section">
-          <h3>Input #${i + 1}</h3>
-          <label>Category:</label>
-          <input type="text" class="input-data" data-index="${i}" data-field="category" value="${item.category}">
-          <label>Title:</label>
-          <input type="text" class="input-data" data-index="${i}" data-field="title" value="${item.title}">
-          <label>Note / Author:</label>
-          <input type="text" class="input-data" data-index="${i}" data-field="note" value="${item.note}">
-        </div>
-      `
+      (item) =>
+        `<li><a href="#" data-modal-trigger="journal" data-id="${item.id}">${item.title}</a><p class="meta">${item.summary}</p></li>`
     )
-    .join(' <hr> ');
-
-  // Journal Entries
-  const journalHTML = currentData.journalEntries
+    .join('');
+  dom.projectList.innerHTML = contentData.projects
     .map(
-      (entry, i) => `
-        <div class="form-section">
-          <h3>Entry #${i + 1}</h3>
-          <label>Date (YYYY-MM-DD):</label>
-          <input type="date" class="journal-data" data-index="${i}" data-field="date" value="${entry.date}">
-          <label>Title:</label>
-          <input type="text" class="journal-data" data-index="${i}" data-field="title" value="${entry.title}">
-          <label>Summary (Markdown):</label>
-          <textarea class="journal-data" data-index="${i}" data-field="summary">${entry.summary}</textarea>
-          <button class="delete-btn" data-index="${i}">Delete Entry</button>
-        </div>
-      `
+      (proj) =>
+        `<li><a href="${proj.href}" target="_blank" rel="noopener">${proj.title}</a><p class="meta">${proj.note}</p></li>`
     )
-    .join(' <hr> ');
-
-  // Defensive: throw a helpful error if the target elements aren’t present
-  const currentInputEl = document.getElementById('current-input-form');
-  const journalEl = document.getElementById('journal-entries-form');
-  if (!currentInputEl) throw new Error('#current-input-form not found');
-  if (!journalEl) throw new Error('#journal-entries-form not found');
-
-  currentInputEl.innerHTML = currentInputHTML;
-  journalEl.innerHTML = journalHTML;
+    .join('');
+  dom.currentList.innerHTML = contentData.currentInput
+    .map(
+      (item) =>
+        `<li><strong>${item.category.toUpperCase()}</strong><p>${item.title} <em class="meta">(${item.note})</em></p></li>`
+    )
+    .join('');
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4️⃣  Pull values back from the DOM into the data object. */
-function updateDataFromDOM() {
-  // Current Input fields
-  document.querySelectorAll('.input-data').forEach(input => {
-    const idx = input.dataset.index;
-    const field = input.dataset.field;
-    currentData.currentInput[idx][field] = input.value.trim();
-  });
-
-  // Journal fields
-  document.querySelectorAll('.journal-data').forEach(input => {
-    const idx = input.dataset.index;
-    const field = input.dataset.field;
-    currentData.journalEntries[idx][field] = input.value.trim();
-  });
+/*-----------------------------------------------------------*/
+/*  Live data – show a UTC clock in the footer */
+function updateLiveData() {
+  if (!dom.liveDataComponent) return;
+  const now = new Date();
+  const timeUTC = now.toLocaleTimeString('en-GB', { timeZone: 'UTC' });
+  const date = now.toLocaleDateString('en-CA');
+  dom.liveDataComponent.textContent = `JOHANNESBURG — ${date} — ${timeUTC} UTC`;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 5️⃣  Export the updated database to the user as a downloadable file. */
-function saveAndDownload() {
-  updateDataFromDOM();
-  const jsContent = `export const db = ${JSON.stringify(currentData, null, 2)};`;
+/*-----------------------------------------------------------*/
+/*  Live signal animation – draws a scrolling sine wave */
+function createLiveSignal(container) {
+  if (!container) return;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 100 50');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-  const blob = new Blob([jsContent], { type: 'text/javascript' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'database.js';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', 'var(--accent)');
+  path.setAttribute('stroke-width', '0.5');
 
-/* -------------------------------------------------------------------------- */
-/* 6️⃣  Add a new journal‑entry (unique id + empty fields). */
-function addNewJournalEntry() {
-  const newId = `j-${Date.now()}`; // simple numeric id
-  currentData.journalEntries.unshift({
-    id: newId,
-    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
-    title: '',
-    summary: ''
-  });
+  svg.appendChild(path);
+  container.innerHTML = '';
+  container.appendChild(svg);
 
-  renderForms(); // re‑render with the new entry
-}
-
-/* -------------------------------------------------------------------------- */
-/* 7️⃣  Delete a journal entry via its index. */
-function deleteJournalEntry(index) {
-  if (!confirm(`Delete Journal Entry #${parseInt(index, 10) + 1}?`)) return;
-  currentData.journalEntries.splice(index, 1);
-  renderForms();
-}
-
-/* -------------------------------------------------------------------------- */
-/* 8️⃣  Wire up DOM events. */
-document.addEventListener('DOMContentLoaded', () => {
-  renderForms(); // paint the initial state
-
-  // Save button
-  document.getElementById('save-button').addEventListener('click', saveAndDownload);
-
-  // Add button
-  document.getElementById('add-journal-entry').addEventListener('click', addNewJournalEntry);
-
-  // Delete buttons (event delegation)
-  document.getElementById('journal-entries-form').addEventListener('click', e => {
-    if (e.target.classList.contains('delete-btn')) {
-      deleteJournalEntry(e.target.dataset.index);
+  let time = 0;
+  function animateSignal() {
+    time += 0.05;
+    let d = 'M0,25';
+    for (let x = 1; x <= 100; x++) {
+      const y =
+        25 +
+        (Math.sin(x * 0.1 + time) * 15 * 0.7) +
+        (Math.sin(x * 0.05 + time * 0.5) * 15 * 0.3);
+      d += ` L${x},${y}`;
     }
-  });
-});
+    path.setAttribute('d', d);
+    signalAnimationId = requestAnimationFrame(animateSignal);
+  }
+  animateSignal();
+}
+
+/*-----------------------------------------------------------*/
+/*  Global click handler – opens modals from any data* triggers */
+function handleGlobalClick(event) {
+  const trigger = event.target.closest('[data-modal-trigger]');
+  if (!trigger) return;
+
+  const modalType = trigger.dataset.modalTrigger;
+
+  if (modalType === 'journal') {
+    const entry = contentData.journalEntries.find(
+      (j) => j.id == trigger.dataset.id
+    );
+    if (entry) {
+      const content = `<div class="essay-content"><h2>${entry.title}</h2><p class="meta">${entry.date}</p><div>${window.marked.parse(entry.summary)}</div></div>`;
+      openModal(content);
+    }
+  }
+
+  if (modalType === 'sensorfx') {
+    const content = `<div id="sensor-canvas-container"></div>`;
+    openModal(content, 'layout-sensor');
+    activeSensor = SensorFX({
+      tileId: 'sensor-tile',
+      canvasContainerId: 'sensor-canvas-container',
+    });
+  }
+}
+
+/*-----------------------------------------------------------*/
+/*  Main initialisation – runs on DOMContentLoaded */
+function initialize() {
+  contentData = db;          // pull in your mock / real data
+  renderHubContent();
+
+  /*  “Issue Zero” modal – a big headline + live signal  */
+  const issueZeroHtml = window.marked.parse(contentData.issueZero.body_md);
+  const issueZeroContent = `
+    <div class="essay-grid-container">
+      <div class="essay-content">
+        <h2>${contentData.issueZero.title}</h2>
+        ${issueZeroHtml}
+      </div>
+      <aside class="marginalia">
+        <figure id="signal-container"></figure>
+        <figcaption class="meta">FIG. 001 - LIVE SIGNAL WAVEFORM</figcaption>
+      </aside>
+    </div>`;
+  openModal(issueZeroContent);
+  const signalContainer = document.getElementById('signal-container');
+  createLiveSignal(signalContainer);
+
+  /*  event listeners */
+  dom.closeModalBtn.addEventListener('click', closeModal);
+  document.addEventListener('click', handleGlobalClick);
+
+  /*  Initialise the signal player – this will inject the play button   */
+  SignalPlayer({ containerId: 'signal-player-container' }).load({});
+
+  /*  Live clock + updater  */
+  updateLiveData();
+  setInterval(updateLiveData, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', initialize);
